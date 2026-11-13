@@ -56,6 +56,7 @@ func CreateRegistryView(createView *api.CreateRegView) {
 	}
 
 	theme := huh.ThemeCharm()
+	verifyCert := !createView.Insecure
 	err := huh.NewForm(
 		huh.NewGroup(
 			huh.NewSelect[string]().
@@ -107,7 +108,7 @@ func CreateRegistryView(createView *api.CreateRegView) {
 				Value(&createView.Credential.AccessSecret),
 			huh.NewConfirm().
 				Title("Verify Cert").
-				Value(&createView.Insecure).
+				Value(&verifyCert).
 				Affirmative("yes").
 				Negative("no"),
 		),
@@ -115,4 +116,5 @@ func CreateRegistryView(createView *api.CreateRegView) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	createView.Insecure = !verifyCert
 }

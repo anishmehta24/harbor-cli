@@ -25,6 +25,7 @@ import (
 
 func UpdateRegistryView(updateView *models.Registry) {
 	theme := huh.ThemeCharm()
+	verifyCert := !updateView.Insecure
 	err := huh.NewForm(
 		huh.NewGroup(
 			huh.NewInput().
@@ -72,7 +73,7 @@ func UpdateRegistryView(updateView *models.Registry) {
 				Value(&updateView.Credential.AccessSecret),
 			huh.NewConfirm().
 				Title("Verify Cert").
-				Value(&updateView.Insecure).
+				Value(&verifyCert).
 				Affirmative("yes").
 				Negative("no"),
 		),
@@ -81,4 +82,5 @@ func UpdateRegistryView(updateView *models.Registry) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	updateView.Insecure = !verifyCert
 }
